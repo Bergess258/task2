@@ -24,7 +24,7 @@ namespace SecondTask
                     First[i1, g] = Convert.ToInt16(temp[g]);
                 }
             }
-            for (int i = 0; i < m; i++)
+            while(m--!=0)
             {
                 ForReading.ReadLine();
                 for(int i1 = 0; i1 < n; i1++)
