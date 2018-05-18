@@ -19,7 +19,6 @@ namespace SecondTask
             s = ForReading.ReadLine();
             int p = Convert.ToInt32(s);
             int[,] First = new int[n,n];
-            int[,] Second = new int[n, n];
             int[,] Temp = new int[n, n];
             s = ForReading.ReadLine();
             for (int i1 = 0; i1 < n; i1++)
@@ -40,19 +39,11 @@ namespace SecondTask
                     temp = s.Split(' ');
                     for(int g = 0; g < temp.Length; g++)
                     {
-                        Second[i1, g] = Convert.ToInt32(temp[g]);
+                        int t = Convert.ToInt32(temp[g]);
                         for (int g1 = 0; g1 < n; g1++)
-                            Temp[g1, g] += First[g1, i1] * Second[i1, g];
+                            Temp[g1, g] += First[g1, i1] * t;
                     }
                 }
-                //for(int i2=0;i2<n;i2++)
-                //    for(int i3 = 0; i3 < n; i3++)
-                //    {
-                //        Temp[i2, i3] = 0;
-                //        for (int g = 0; g < n; g++)
-                //            Temp[i2, i3] += First[i2, g] * Second[g, i3];
-                //        Temp[i2, i3] %=p;
-                //    }
                 for (int i1 = 0; i1 < n; i1++)
                 {
                     for (int g = 0; g < temp.Length; g++)
