@@ -14,22 +14,28 @@ namespace SecondTask
             int a= Convert.ToInt32(temp[0])-1, b = Convert.ToInt32(temp[1])-1;
             int p = Convert.ToInt32(ForReading.ReadLine());
             int[][] First = new int[n][];
-            int[][] Second = new int[n][];
             int[][] Temp = new int[n][];
             ForReading.ReadLine();
-            for (int i = 0; i < n; i++)
+            for (int i1 = 0; i1 < n; i1++)
             {
-                First[i] = new int[n];
-                Second[i] = new int[n];
-                Temp[i] = new int[n];
+                First[i1] = new int[n];
+                Temp[i1] = new int[n];
             }
             for (int i1 = 0; i1 < n; i1++)
             {
-                temp = ForReading.ReadLine().Split(' ');
-                for (int g = 0; g < temp.Length; g++)
-                {
-                    First[i1][g] = Convert.ToInt32(temp[g]);
-                }
+                    string s = ForReading.ReadLine();
+                    string t = "";
+                int i = 0;
+                    foreach(char c in s)
+                    {
+                        if (c == ' ')
+                        {
+                            First[i1][i++] = Convert.ToInt32(t);
+                            t = "";
+                        }
+                        else
+                            t += c;
+                    }
             }
             for (int i = 0; i < m; i++)
             {
@@ -37,25 +43,23 @@ namespace SecondTask
                 for (int i1 = 0; i1 < n; i1++)
                 {
                     temp = ForReading.ReadLine().Split(' ');
-                    for(int g = 0; g < temp.Length; g++)
-                    {
-                        Second[g][i1] = Convert.ToInt32(temp[g]);
-                    }
-                }
-                for(int i2=0;i2<n;i2++)
-                    for(int i3 = 0; i3 < n; i3++)
-                    {
-                        Temp[i2][i3] = 0;
-                        for (int g = 0; g < n; g++)
-                            Temp[i2][i3] += First[i2][g] * Second[i3][g];
-                        Temp[i2][i3] %=p;
-                    }
-                for (int i1 = 0; i1 < n; i1++)
-                {
                     for (int g = 0; g < temp.Length; g++)
                     {
-                        First[i1][g] = Temp[i1][g];
+                        int t = Convert.ToInt16(temp[g]);
+                        for (int g1 = 0; g1 < n; g1++)
+                            Temp[g1][g] += First[g1][i1] * t;
                     }
+                }
+                for (int g = 0; g < n; g++)
+                {
+                    for (int i1 = 0; i1 < temp.Length; i1++)
+                    {
+                        First[g][i1] = Temp[g][i1]%p;
+                    }
+                }
+                for (int g = 0; g < n; g++)
+                {
+                    Temp[g] = new int[n];
                 }
             }
             ForReading.Close();
