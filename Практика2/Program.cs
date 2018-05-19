@@ -23,19 +23,11 @@ namespace SecondTask
             }
             for (int i1 = 0; i1 < n; i1++)
             {
-                    string s = ForReading.ReadLine();
-                    string t = "";
-                int i = 0;
-                    foreach(char c in s)
-                    {
-                        if (c == ' ')
-                        {
-                            First[i1][i++] = Convert.ToInt32(t);
-                            t = "";
-                        }
-                        else
-                            t += c;
-                    }
+                temp = ForReading.ReadLine().Split(' ');
+                for (int g = 0; g < temp.Length; g++)
+                {
+                    First[i1][g] = Convert.ToInt32(temp[g]);
+                }
             }
             for (int i = 0; i < m; i++)
             {
@@ -43,7 +35,7 @@ namespace SecondTask
                 for (int i1 = 0; i1 < n; i1++)
                 {
                     temp = ForReading.ReadLine().Split(' ');
-                    for (int g = 0; g < temp.Length; g++)
+                    for (int g = 0; g <n;g++)
                     {
                         int t = Convert.ToInt16(temp[g]);
                         for (int g1 = 0; g1 < n; g1++)
@@ -52,7 +44,7 @@ namespace SecondTask
                 }
                 for (int g = 0; g < n; g++)
                 {
-                    for (int i1 = 0; i1 < temp.Length; i1++)
+                    for (int i1 = 0; i1 < n; i1++)
                     {
                         First[g][i1] = Temp[g][i1]%p;
                     }
