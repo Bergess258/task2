@@ -31,32 +31,53 @@ namespace SecondTask
             }
             for (int i = 0; i < m; i++)
             {
-                ForReading.ReadLine();
-                for (int i1 = 0; i1 < n; i1++)
+                if (i % 2 == 0)
                 {
-                    temp = ForReading.ReadLine().Split(' ');
-                    for (int g = 0; g <n;g++)
-                    {
-                        int t = Convert.ToInt16(temp[g]);
-                        for (int g1 = 0; g1 < n; g1++)
-                            Temp[g1][g] += First[g1][i1] * t;
-                    }
-                }
-                for (int g = 0; g < n; g++)
-                {
+                    ForReading.ReadLine();
                     for (int i1 = 0; i1 < n; i1++)
                     {
-                        First[g][i1] = Temp[g][i1]%p;
+                        temp = ForReading.ReadLine().Split(' ');
+                        for (int g = 0; g < n; g++)
+                        {
+                            int t = Convert.ToInt16(temp[g]);
+                            for (int g1 = 0; g1 < n; g1++)
+                                Temp[g1][g] += First[g1][i1] * t;
+                        }
+                    }
+                    for (int i1 = 0; i1 < n; i1++)
+                    {
+                        First[i1] = new int[n];
+                        for (int g = 0; g < n; g++)
+                            Temp[g][i1] %= p;
                     }
                 }
-                for (int g = 0; g < n; g++)
+                else
                 {
-                    Temp[g] = new int[n];
+                    ForReading.ReadLine();
+                    for (int i1 = 0; i1 < n; i1++)
+                    {
+                        temp = ForReading.ReadLine().Split(' ');
+                        for (int g = 0; g < n; g++)
+                        {
+                            int t = Convert.ToInt16(temp[g]);
+                            for (int g1 = 0; g1 < n; g1++)
+                                First[g1][g] += Temp[g1][i1] * t;
+                        }
+                    }
+                    for (int i1 = 0; i1 < n; i1++)
+                    {
+                        Temp[i1] = new int[n];
+                        for (int g = 0; g < n; g++)
+                            First[g][i1] %= p;
+                    }
                 }
             }
             ForReading.Close();
             StreamWriter Writel = new StreamWriter("OUTPUT.TXT");
+            if(m%2==0)
             Writel.Write(First[a][b]);
+            else
+                Writel.Write(Temp[a][b]);
             Writel.Close();
         }
     }
