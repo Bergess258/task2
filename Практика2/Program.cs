@@ -8,11 +8,14 @@ namespace SecondTask
         static void Main(string[] args)
         {
             StreamReader ForReading = new StreamReader("INPUT.TXT");
-            string[] temp = ForReading.ReadLine().Split(' ');
-            int m = Convert.ToInt32(temp[0]) - 1, n = Convert.ToInt32(temp[1]);
-            temp = ForReading.ReadLine().Split(' ');
-            int a = Convert.ToInt32(temp[0]) - 1, b = Convert.ToInt32(temp[1]) - 1;
-            int p = Convert.ToInt32(ForReading.ReadLine());
+            int m, n,a,b,p;
+            {
+                string[] temp = ForReading.ReadLine().Split(' ');
+                m = Convert.ToInt32(temp[0]) - 1; n = Convert.ToInt32(temp[1]);
+                temp = ForReading.ReadLine().Split(' ');
+                a = Convert.ToInt32(temp[0]) - 1; b = Convert.ToInt32(temp[1]) - 1;
+                p = Convert.ToInt32(ForReading.ReadLine());
+            }
             int[][] First = new int[n][];
             int[][] Temp = new int[n][];
             ForReading.ReadLine();
@@ -21,43 +24,77 @@ namespace SecondTask
                 First[i1] = new int[n];
                 Temp[i1] = new int[n];
             }
-            for (int i1 = 0; i1 < n; i1++)
             {
-                temp = ForReading.ReadLine().Split(' ');
-                for (int g = 0; g < temp.Length; g++)
+                string[] l;
+                for (int i1 = 0; i1 < n; i1++)
                 {
-                    First[i1][g] = Convert.ToInt32(temp[g]);
+                    l = ForReading.ReadLine().Split(' ');
+                    for (int g = 0; g < n; g++)
+                    {
+                        First[i1][g] = Convert.ToInt32(l[g]);
+                    }
                 }
             }
-            for (int i = 0; i < m; i++)
+            while (m-- > 1)
             {
+                string[] l1;
                 ForReading.ReadLine();
                 for (int i1 = 0; i1 < n; i1++)
                 {
-                    temp = ForReading.ReadLine().Split(' ');
-                    for (int g = 0; g < temp.Length; g++)
+                    l1 = ForReading.ReadLine().Split(' ');
+                    for (int g = 0; g < n; g++)
                     {
-                        int t = Convert.ToInt16(temp[g]);
-                        for (int g1 = 0; g1 < n; g1++)
-                            Temp[g1][g] += First[g1][i1] * t;
+                        Temp[i1][g] = Convert.ToInt32(l1[g]);
                     }
                 }
-                for (int g = 0; g < n; g++)
+                First = multiplyTransposed(First, Temp, p);
+            }
+            int c = 0;
+            if (m != -1)
+            {
+                ForReading.ReadLine();
+                string[] l1;
+                for (int i1 = 0; i1 < n; i1++)
                 {
-                    for (int i1 = 0; i1 < temp.Length; i1++)
-                    {
-                        First[g][i1] = Temp[g][i1] % p;
-                    }
-                }
-                for (int g = 0; g < n; g++)
-                {
-                    Temp[g] = new int[n];
+                    l1 = ForReading.ReadLine().Split(' ');
+                    c += First[a][i1] * Convert.ToInt32(l1[b]);
                 }
             }
+            else
+                c = First[a][b];
             ForReading.Close();
             StreamWriter Writel = new StreamWriter("OUTPUT.TXT");
-            Writel.Write(First[a][b]);
+            Writel.Write(c % p);
             Writel.Close();
+        }
+        public static int[][] multiplyTransposed(int[][] a, int[][] b, int p)
+        {
+            int n = b[0].Length;
+            int[] columnB = new int[n];
+            int[][] c = new int[n][];
+            for (int i = 0; i < n; i++)
+            {
+                c[i] = new int[n];
+            }
+
+            for (int j = 0; j < n; j++)
+            {
+                for (int k = 0; k < n; k++)
+                {
+                    columnB[k] = b[k][j];
+                }
+                for (int i = 0; i < n; i++)
+                {
+                    int[] rowA = a[i];
+                    int sum = 0;
+                    for (int k = 0; k < n; k++)
+                    {
+                        sum += a[i][k] * columnB[k];
+                    }
+                    c[i][j] = sum % p;
+                }
+            }
+            return c;
         }
     }
 }
