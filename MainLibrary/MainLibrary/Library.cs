@@ -577,7 +577,7 @@ namespace MainLibrary
         }
         public static double RandomDouble(int a, int b)
         {
-            double info = MLib.RandIntFT(a, b);
+            double info = RandIntFT(a, b);
             Random fixRand = new Random(123);
             info += fixRand.NextDouble();
             return info;
@@ -784,7 +784,7 @@ namespace MainLibrary
             for (int i = 0; i < positions.GetLength(1) - 1; i++)
                 for (int j = i + 1; j < positions.GetLength(1); j++)
                     if (positions[0, i] == positions[0, j] && positions[1, i] == positions[1, j])
-                        roots = MLib.SimpleAddInMassAtTheBeginning(roots, positions[2, j]);
+                        roots = SimpleAddInMassAtTheBeginning(roots, positions[2, j]);
         }
         public static void RewriteTreeInMass(TreeNode root, int x, int y, ref int[,] positions, int position)
         {
