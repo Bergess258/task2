@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using InputDLL;
+using MainLibrary;
 using System.Threading.Tasks;
 
 namespace Task3
@@ -11,7 +11,10 @@ namespace Task3
     {
         static void Main(string[] args)
         {
-            int x=;
+            int x=Library.ReadInt();
+            int y = Library.ReadInt();
+            if (4 * x * x + y * y <= 1) Console.WriteLine("Входит");
+            else Console.WriteLine("Не входит");
         }
     }
 }
