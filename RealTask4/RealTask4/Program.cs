@@ -18,7 +18,6 @@ namespace RealTask4
                 Multiply(mas, masForChanges, i);
             }
         }
-
         private static void Multiply(List<int> mas, List<int> masForChanges, int i)
         {
             for (int c = mas.Count; c > 0; --c)
