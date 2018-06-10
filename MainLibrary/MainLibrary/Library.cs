@@ -892,5 +892,19 @@ namespace MainLibrary
             CheckForHeight(root.Left, x + 1, ref y1);
             CheckForHeight(root.Right, x + 1, ref y1);
         }
+        static public int RandomInt01(int num, int ChanseWithoutPoint)
+        {
+            int n = 10;
+            while (ChanseWithoutPoint / n != 0)
+                n *= 10;
+            int[] mas = new int[n];
+            for(int i = 0; i < ChanseWithoutPoint; i++)
+                mas[i] = num;
+            int c=1;
+            if (num == 1) c = 0;
+            for (int i = ChanseWithoutPoint; i < n; i++)
+                mas[i] = c;
+            return mas[RandIntFT(0, n)];
+        }
     }
 }
