@@ -1,0 +1,18 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Task9
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            List mas = new List();
+            mas.Add(10);
+            mas.Printlist();
+        }
+    }
+}
