@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Comparer.cs" />
+    <Compile Include="DictionaryCommon.cs" />
     <Compile Include="Library.cs" />
     <Compile Include="PlacesV.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

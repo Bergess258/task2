@@ -10,8 +10,7 @@ namespace Task9
     {
         static void Main(string[] args)
         {
-            List mas = new List();
-            mas.Add(10);
+            List mas = new List(10);
             mas.Printlist();
         }
     }

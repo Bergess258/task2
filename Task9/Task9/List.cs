@@ -43,6 +43,7 @@ namespace Task9
         public List(int num)
         {
             Main.data = num;
+            Add(num-1);
         }
         public void Add(int num)
         {
@@ -50,8 +51,9 @@ namespace Task9
             p1.next = Main;
             Main.pred = p1;
             Main = p1;
-            if (num-1 > 0)
+            if (num - 1 > 0)
                 Add(num - 1);
+                
         }
         static Point MakeRandomList(int size)
         {
