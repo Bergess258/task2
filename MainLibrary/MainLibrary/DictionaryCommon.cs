@@ -19,6 +19,18 @@ namespace MainLibrary
             {
 
             }
+            public Point(TKey key, TValue value)
+            {
+                Value = value;
+                Key = key;
+            }
+
+            public Point Clone()
+            {
+                TKey temp = Key;
+                TValue tempval = Value;
+                return new Point(temp, tempval);
+            }
 
             public int CompareTo(object x)
             {
@@ -33,20 +45,27 @@ namespace MainLibrary
             }
         }
         private int count = 0;
-        private int position = 0;
+        private int position = -1;
         private int SizeMass = 100;
         private int[] buckets = new int[100];
         private Point[] entries = new Point[100];
         public DictionaryCommon()
         {
-            for (int i = 0; i < SizeMass; i++)
+            CreateMasses(out buckets, out entries);
+        }
+        public DictionaryCommon(int c)
+        {
+            SizeMass = c;
+            CreateMasses(out buckets, out entries);
+        }
+        public Point this[int key]
+        {
+            get
             {
-                buckets[i] = -1;
-            }
-            Point temp = new Point();
-            for (int i = 0; i < SizeMass; i++)
-            {
-                entries[i] = new Point();
+                if (key > -1 && key < count)
+                    return entries[key];
+                else
+                    throw new Exception(" Индекс не попадает в диапазон");
             }
         }
         public TValue this[TKey key]
@@ -79,11 +98,11 @@ namespace MainLibrary
                 if (place == -1)
                 {
                     buckets[hash] = count;
-                    entries[count] = new Point() { HashCode = hash, Key = key, Value = value, Next = count };
+                    entries[count] = new Point() { HashCode = hash, Key = key, Value = value };
                 }
                 else
                 {
-                    entries[place] = new Point() { HashCode = hash, Key = key, Value = value, Next = count };
+                    entries[place] = new Point() { HashCode = hash, Key = key, Value = value, Next = entries[place].Next };
                 }
             }
         }
@@ -153,19 +172,23 @@ namespace MainLibrary
         {
             int hash = GetHash(key);
             int place = buckets[hash];
+            string ForKey = key.ToString(), ForValue = value.ToString();
             if (place != -1)
             {
                 Point temp = entries[place];
+                int pla = place;
                 do
                 {
-                    if (temp.Key.ToString() == key.ToString() && temp.Value.ToString() == value.ToString()) break;
+                    if (temp.Key.ToString() == ForKey && temp.Value.ToString() == ForValue) break;
                     else
                     {
                         if (temp.Next == -1)
                         {
-                            entries[count] = new Point() { HashCode = hash, Key = key, Value = value, Next = count };
+                            entries[pla].Next = count;
+                            entries[count++] = new Point() { HashCode = hash, Key = key, Value = value };
                             break;
                         }
+                        pla = temp.Next;
                         temp = entries[temp.Next];
                     }
                 } while (true);
@@ -182,34 +205,35 @@ namespace MainLibrary
         {
             if (count / (double)SizeMass > 0.7)
             {
-                SizeMass += 100;
+                SizeMass += 200;
                 int[] te;
                 Point[] Temp;
                 CreateMasses(out te, out Temp);
                 for (int i = 0; i < count; i++)
                 {
+                    int hash = GetHash(entries[i].Key);
+                    entries[i].HashCode = hash;
                     Temp[i] = entries[i];
-                    te[GetHash(entries[i].Key)] = i;
+                    Temp[i].Next = -1;
+                    if (te[hash] != -1)
+                    {
+                        Point point = Temp[te[hash]];
+                        do
+                        {
+                            if (point.Next == -1)
+                            {
+                                point.Next = i;
+                                break;
+                            }
+                            point = Temp[point.Next];
+                        } while (true);
+                    }
+                    else
+                        te[hash] = i;
                 }
                 entries = Temp;
                 buckets = te;
             }
-            else
-            if (SizeMass - 100 != 0)
-                if ((count / (double)(SizeMass - 100)) < 0.1)
-                {
-                    SizeMass -= 100;
-                    int[] te;
-                    Point[] Temp;
-                    CreateMasses(out te, out Temp);
-                    for (int i = 0; i < count; i++)
-                    {
-                        Temp[i] = entries[i];
-                        te[GetHash(entries[i].Key)] = i;
-                    }
-                    entries = Temp;
-                    buckets = te;
-                }
         }
 
         private void CreateMasses(out int[] te, out Point[] Temp)
@@ -228,8 +252,7 @@ namespace MainLibrary
 
         public void Add(KeyValuePair<TKey, TValue> item)
         {
-            this[item.Key] = item.Value;
-            CheckForSize();
+            Add(item.Key, item.Value);
         }
 
         public void Clear()
@@ -291,7 +314,7 @@ namespace MainLibrary
 
         public IEnumerator GetEnumerator()
         {
-            return ((IEnumerable)buckets).GetEnumerator();
+            return (IEnumerator)this;
         }
         bool IEnumerator.MoveNext()
         {
@@ -304,7 +327,7 @@ namespace MainLibrary
         }
         void IEnumerator.Reset()
         {
-            position = 0;
+            position = -1;
         }
         public int GetHash(object adres)
         {
@@ -370,7 +393,6 @@ namespace MainLibrary
         {
             Clear();
         }
-
         public object Clone()
         {
             Point[] Temp = new Point[SizeMass];
