@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MainLibrary
 {
-    class DictionaryCommon<TKey, TValue> : IDictionary<TKey, TValue>, IDisposable, ICloneable, IEnumerator
+    public class DictionaryCommon<TKey, TValue> : IDictionary<TKey, TValue>, IDisposable, ICloneable, IEnumerator
     {
         public class Point : IComparable
         {
@@ -91,7 +91,11 @@ namespace MainLibrary
         {
             get { return count; }
         }
-
+        public Point[] Entries
+        {
+            get { return entries; }
+            set { entries = value; }
+        }
         public bool IsReadOnly { get { return false; } }
 
         ICollection<TKey> IDictionary<TKey, TValue>.Keys
@@ -315,20 +319,30 @@ namespace MainLibrary
         {
             int hash = GetHash(key);
             int place = buckets[hash];
-            Point Temp = entries[place];
+            int c = 0,s=place;
+            Point Temp;
             do
             {
+                Temp = entries[place];
+                c++;
                 if (Temp.Key.ToString() == key.ToString())
                 {
-                    for (int i = place + 1; i < count; i++)
+                    if (c == 1)
+                        buckets[hash] = -1;
+                    else
+                    entries[s].Next = entries[place].Next;
+                    for (int i = place; i < count; i++)
                     {
                         entries[i - 1] = entries[i];
                         buckets[entries[i].HashCode]--;
+                        
                     }
+                    count--;
                     return true;
                 }
+                s = place;
                 if (Temp.Next == -1) return false;
-                else Temp = entries[Temp.Next];
+                else place=Temp.Next;
             } while (true);
         }
 

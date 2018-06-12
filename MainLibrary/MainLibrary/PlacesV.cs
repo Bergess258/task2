@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MainLibrary
 {
-    class PlacesV : IComparable
+    public class PlacesV : IComparable
     {
         string name;
         public string Name
@@ -78,7 +78,7 @@ namespace MainLibrary
             return name;
         }
     }
-    class Region : PlacesV //Кол-во мужчин во всех регионах
+    public class Region : PlacesV //Кол-во мужчин во всех регионах
     {
         int numberMans = 0;
         int numberCities = 0;
@@ -127,7 +127,7 @@ namespace MainLibrary
         }
     }
 
-    class City : PlacesV // кол-во горожан во всех регионах 
+    public class City : PlacesV // кол-во горожан во всех регионах 
     {
         int citizens = 0;
         public int Citizens
@@ -164,7 +164,7 @@ namespace MainLibrary
         }
     }
 
-    class Megapolis : PlacesV
+    public class Megapolis : PlacesV
     {
         private int countFabriks;
         public int CounFabriks
@@ -178,6 +178,7 @@ namespace MainLibrary
         }
         public Megapolis(string name) : base(name)
         {
+
         }
         public Megapolis(string name, int t) : base(name)
         {
@@ -197,7 +198,7 @@ namespace MainLibrary
         }
     }
 
-    class Adres : PlacesV
+    public class Adres : PlacesV
     {
         int index;
         public int Index
