@@ -24,7 +24,7 @@ namespace Zadanie7
                     byte t = Convert.ToByte(y1);
                     if (t < 0 && t > 1) { Console.WriteLine("Неверный формат кода"); ok = false; break; }
                     list.Add(t);
-                } 
+                }
             } while (ok == false);
             int Step = 2;
             List<byte> End = new List<byte>();
