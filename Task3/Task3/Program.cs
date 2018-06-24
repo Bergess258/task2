@@ -11,9 +11,9 @@ namespace Task3
     {
         static void Main(string[] args)
         {
-            int x=Library.ReadInt();
-            int y = Library.ReadInt();
-            if (4 * x * x + y * y <= 1) Console.WriteLine("Входит");
+            double x=Library.ReadInt();
+            double y = Library.ReadInt();
+            if (Math.Abs(2*x)<=Math.Abs(y)) Console.WriteLine("Входит");
             else Console.WriteLine("Не входит");
         }
     }
