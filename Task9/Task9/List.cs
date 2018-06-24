@@ -9,7 +9,7 @@ namespace Task9
 {
     class List
     {
-        class Point
+        public class Point
         {
             public int data;
             public Point next, pred;
@@ -25,6 +25,12 @@ namespace Task9
                 next = null;
                 pred = null;
             }
+            public Point(Point d)
+            {
+                data = d.data;
+                next = d.next;
+                pred = d.pred;
+            }
             public override string ToString()
             {
                 return data + " ";
@@ -36,6 +42,10 @@ namespace Task9
             Point p = new Point(d);
             return p;
         }
+        public static implicit operator Point(List l)
+        {
+            return l.Main;
+        }
         public List()
         {
             
@@ -44,6 +54,10 @@ namespace Task9
         {
             Main.data = num;
             Add(num-1);
+        }
+        public List(Point num)
+        {
+            Main = num;
         }
         public void Add(int num)
         {
@@ -54,6 +68,21 @@ namespace Task9
             if (num - 1 > 0)
                 Add(num - 1);
                 
+        }
+        public static bool Contains(int Num,Point point)
+        {
+            Point temp = new Point();
+            temp = point;
+            if (temp.next == null) return false;
+            if (temp.data == Num) return true;
+            return Contains(Num, temp.next);
+        }
+        public static List Remove(int Num, Point point)
+        {
+            Point temp = new Point();
+            temp = point;
+            if (temp.data == Num) { Point p = new Point();p= temp.pred; temp = temp.next; temp.pred = p; temp.pred.next = temp; return new List(temp); }
+            return Remove(Num, temp.next);
         }
         static Point MakeRandomList(int size)
         {
@@ -84,6 +113,8 @@ namespace Task9
                 Console.WriteLine("Список пуст");
                 return;
             }
+            while(beg.pred!=null)
+                beg = beg.pred;
             Point p = beg;
             while (p != null)
             {

@@ -797,7 +797,7 @@ namespace MainLibrary
             RewriteTreeInMass(root.Left, x - 7, y + 1, ref positions, position);
             RewriteTreeInMass(root.Right, x + 7, y + 1, ref positions, position);
         }
-        static void AddNode(ref TreeNode root, int info)
+        public static void AddNode(ref TreeNode root, int info)
         {
             var newNode = new TreeNode { Info = info };
             if (root == null)
