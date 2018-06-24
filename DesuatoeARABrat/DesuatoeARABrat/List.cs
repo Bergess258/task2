@@ -63,6 +63,7 @@ namespace DesuatoeARABrat
                 P = P.next;
             P.next = Main;
             Main = P.next;
+            Main.pred = P;
         }
         public void Add(int num)
         {

@@ -13,7 +13,6 @@ namespace DesuatoeARABrat
         {
             int n = Library.ReadIntMoreThan(0);
             int m = Library.ReadIntMoreThan(0);
-            int c = m;
             List list = new List(n);
             list.StartSchet(m);
             Console.WriteLine(list.Data());
