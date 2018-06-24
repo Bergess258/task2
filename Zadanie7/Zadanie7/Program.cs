@@ -41,10 +41,8 @@ namespace Zadanie7
                 int g = i-1;
                 while (g < End.Count)
                 {
-                    for (int t = 0; t < i; t++)
-                        if (g + t < End.Count)
+                    for (int t = 0; t < i&& g + t < End.Count; t++)
                             temp += End[g + t];
-                        else break;
                     g += i * 2;
                 }
                 if (temp % 2 == 1) End[i-1] = 1;

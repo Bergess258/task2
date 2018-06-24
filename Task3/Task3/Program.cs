@@ -13,7 +13,7 @@ namespace Task3
         {
             double x=Library.ReadInt();
             double y = Library.ReadInt();
-            bool Res = Math.Abs(2 * x) <= Math.Abs(y);
+            bool Res = Math.Abs(2 * x)+ Math.Abs(y) <= 1;
             if (Res) Console.WriteLine("Входит");
             else Console.WriteLine("Не входит");
         }

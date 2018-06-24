@@ -17,8 +17,9 @@ namespace RealTask4
             {
                 Multiply(mas, masForChanges, i);
             }
-            foreach (int t in mas)
-                Console.Write(t);
+            for(int t=mas.Count-1;t>=0;t--)
+                Console.Write(mas[t]);
+            Console.WriteLine();
         }
         private static void Multiply(List<int> mas, List<int> masForChanges, int i)
         {

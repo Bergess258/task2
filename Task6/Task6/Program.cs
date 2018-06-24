@@ -28,6 +28,7 @@ namespace Task6
             Console.Write("Равенство ");
             if (mas[mas.Count - 1] == M) Console.WriteLine("выполняется");
             Console.WriteLine("не выполняется");
+            Console.ReadLine();
         }
     }
 }
