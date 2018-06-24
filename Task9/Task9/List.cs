@@ -79,6 +79,7 @@ namespace Task9
         }
         public static List Remove(int Num, Point point)
         {
+            if (point == null) return null;
             Point temp = new Point();
             temp = point;
             if (temp.data == Num) { Point p = new Point();p= temp.pred; temp = temp.next; temp.pred = p; temp.pred.next = temp; return new List(temp); }
