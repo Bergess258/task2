@@ -725,7 +725,130 @@ namespace MainLibrary
             public int Info { get; set; }
             public TreeNode Left { get; set; }
             public TreeNode Right { get; set; }
+            public void Print()
+            {
+                int y = 0, y1 = 0, c = 0;
+                int[,] positions = new int[3, 32];
+                CheckForHeight(this, 0, ref y1);
+                CheckForLenght(this, 0, 1, ref y, y1);
+                RewriteTreeInMass(this, Math.Abs(y), 1, ref positions, 0, y1);
+                if (Math.Abs(y * 2) + 20 < 213)
+                    Console.SetWindowSize(Math.Abs(y * 2) + 20, y1 + 1);
+                else
+                    Console.SetWindowSize(212, y1 + 1);
+                SimpleSelectSort(positions, 2);
+                if (y1 > 4) RepairTree(ref positions, this.Right, 7);
+                for (int i = 3; i < positions.GetLength(1); i++)
+                {
+                    int j = i + 1;
+                    while (j < positions.GetLength(1) && (positions[1, j] - positions[1, i] == 1 || positions[1, j] - positions[1, i] == 0))
+                    {
+                        if (Math.Abs(positions[0, j] - positions[0, i]) < 4)
+                        {
+                            TreeNode temp = null;
+                            SearchInRoot(this, positions[2, j], ref temp);
+                            if (temp.Right != null && temp.Left != null)
+                                if ((positions[0, j] == temp.Right.Info || positions[0, j] == temp.Left.Info) && (positions[0, i] == temp.Right.Info || positions[0, i] == temp.Left.Info))
+                                {
+                                    RepairTree(ref positions, temp.Left, -1);
+                                    RepairTree(ref positions, temp.Right, 1);
+                                }
+                                else
+                                {
+                                    int c2 = SearchPositionRoot(temp, positions, 0);
+                                    if (positions[0, c2] - positions[0, j] > 2)
+                                        RepairTree(ref positions, temp.Left, 2);
+                                    SearchInRoot(this, positions[2, i], ref temp);
+                                    c2 = SearchPositionRoot(temp, positions, 0);
+                                    if (positions[0, i] - positions[0, c2] > 2)
+                                        RepairTree(ref positions, temp.Right, -2);
+                                }
+                        }
+                        j++;
+                    }
+                }
+                for (int i = 3; i < positions.GetLength(1); i++)
+                {
+                    int j = i + 1;
+                    while (j < positions.GetLength(1) && (positions[1, j] - positions[1, i] == 1 || positions[1, j] - positions[1, i] == 0))
+                    {
+                        if (Math.Abs(positions[0, j] - positions[0, i]) < 5)
+                        {
+                            TreeNode temp = null;
+                            SearchInRoot(this, positions[2, j], ref temp);
+                            RepairTree(ref positions, temp.Left, 2);
+                            SearchInRoot(this, positions[2, i], ref temp);
+                            RepairTree(ref positions, temp.Right, -2);
+                        }
+                        j++;
+                    }
+                }
+                for (int i = 3; i < positions.GetLength(1); i++)
+                {
+                    int j = i + 1;
+                    while (j < positions.GetLength(1) && positions[1, j] - positions[1, i] == 0)
+                    {
+                        if (Math.Abs(positions[0, j] - positions[0, i]) < 4)
+                        {
+                            TreeNode temp = null;
+                            SearchInRoot(this, positions[2, j], ref temp);
+                            RepairTree(ref positions, temp.Left, 2);
+                            SearchInRoot(this, positions[2, i], ref temp);
+                            RepairTree(ref positions, temp.Right, -2);
+                        }
+                        j++;
+                    }
+                }
+                c = 0;
+                PrintTree(this, Math.Abs(y), 0, positions, y1);
+            }
+            public static void SimpleSelectSort(int[,] mas, int Stroka)
+            {
+                Stroka -= 1;
+                for (int i = 0; i < mas.GetLength(1); i++)
+                {
+                    int min = i;
+                    for (int j = i + 1; j < mas.GetLength(1); j++)
+                    {
+                        if (mas[Stroka, j] < mas[Stroka, min]) min = j;
+                    }
+                    for (int g = 0; g < mas.GetLength(0); g++)
+                    {
+                        int Tmp = mas[g, i];
+                        mas[g, i] = mas[g, min];
+                        mas[g, min] = Tmp;
+                    }
+                }
+            }
+            private static void RepairTree(ref int[,] positions, TreeNode temp, int a1)
+            {
+                if (temp == null) return;
+                int c = SearchPositionRoot(temp, positions, 0);
+                positions[0, c] += a1;
+                RepairTree(ref positions, temp.Left, a1);
+                RepairTree(ref positions, temp.Right, a1);
+            }
+        public static void SearchInRoot(TreeNode root, int c, ref TreeNode temp)
+        {
+            if (root != null)
+            {
+                if (root.Right != null)
+                {
+                    if (root.Right.Info == c)
+                        temp = root;
+                    else
+                        SearchInRoot(root.Right, c, ref temp);
+                }
+            }
+            if (root.Left != null)
+            {
+                if (root.Left.Info == c)
+                    temp = root;
+                else
+                    SearchInRoot(root.Left, c, ref temp);
+            }
         }
+    }
         public static TreeNode InputIdealTree(int size, TreeNode p, ref string s)
         {
             TreeNode r = new TreeNode();
@@ -780,13 +903,13 @@ namespace MainLibrary
 
         public static void CheckForIntersections(TreeNode root, ref int[,] positions, int y, ref int[] roots)
         {
-            RewriteTreeInMass(root, Math.Abs(y), 1, ref positions, 0);
+            RewriteTreeInMass(root, Math.Abs(y), 1, ref positions, 0,0);
             for (int i = 0; i < positions.GetLength(1) - 1; i++)
                 for (int j = i + 1; j < positions.GetLength(1); j++)
                     if (positions[0, i] == positions[0, j] && positions[1, i] == positions[1, j])
                         roots = SimpleAddInMassAtTheBeginning(roots, positions[2, j]);
         }
-        public static void RewriteTreeInMass(TreeNode root, int x, int y, ref int[,] positions, int position)
+        static void RewriteTreeInMass(TreeNode root, int x, int y, ref int[,] positions, int position, int ymax)
         {
             if (root == null)
                 return;
@@ -794,8 +917,8 @@ namespace MainLibrary
             positions[0, position] = x;
             positions[1, position] = y;
             positions[2, position] = root.Info;
-            RewriteTreeInMass(root.Left, x - 7, y + 1, ref positions, position);
-            RewriteTreeInMass(root.Right, x + 7, y + 1, ref positions, position);
+            RewriteTreeInMass(root.Left, x - 7 * ymax / y, y + 1, ref positions, position, ymax);
+            RewriteTreeInMass(root.Right, x + 7 * ymax / y, y + 1, ref positions, position, ymax);
         }
         public static void AddNode(ref TreeNode root, int info)
         {
@@ -828,61 +951,66 @@ namespace MainLibrary
                 else return;
             }
         }
-        static void PrintTree(TreeNode root, int x, int y, ref int[,] positions)
-        {
-            if (root == null)
-                return;
-            if (root.Left != null)
-            {
-                Console.SetCursorPosition(x - 7, y);
-                Console.Write("┌──────");
-            }
 
-            if (root.Right != null)
-            {
-                Console.SetCursorPosition(x + 1, y);
-                Console.Write("──────┐");
-            }
-            Console.SetCursorPosition(x, y);
-            Console.Write(root.Info);
-            PrintTree(root.Left, x - 7, y + 1, ref positions);
-            PrintTree(root.Right, x + 7, y + 1, ref positions);
-        }
-        static void PrintTree(TreeNode root, int x, int y, ref int[,] positions, int[] roots, ref bool ok)
+        static void PrintTree(TreeNode root, int x, int y, int[,] positions, int y1)
         {
             if (root == null)
                 return;
-            if (root.Left != null)
+            if (y <= y1)
             {
-                Console.SetCursorPosition(x - 7, y);
-                Console.Write("┌──────");
+                int c = 0, c1 = 0, c2 = 0;
+                c = SearchPositionRoot(root, positions, 0);
+                if (root.Left != null)
+                {
+                    c1 = SearchPositionRoot(root.Left, positions, 0);
+                    Console.SetCursorPosition(positions[0, c1], y);
+                    Console.Write("┌");
+                    WriteBranchForLeft(positions, c, c1);
+                }
+                if (root.Right != null)
+                {
+                    c2 = SearchPositionRoot(root.Right, positions, 0);
+                    Console.SetCursorPosition(x + 1, y);
+                    WriteBranchForRight(positions, c, c2);
+                    Console.Write("┐");
+                }
+                Console.SetCursorPosition(x, y);
+                Console.Write(root.Info);
+                PrintTree(root.Left, positions[0, c1], y + 1, positions, y1);
+                PrintTree(root.Right, positions[0, c2], y + 1, positions, y1);
             }
-            if (root.Right != null)
-            {
-                Console.SetCursorPosition(x + 1, y);
-                if (ok == true)
-                    for (int i = 0; i < roots.Length + 1; i++)
-                        Console.Write("───────");
-                Console.Write("──────┐");
-            }
-            Console.SetCursorPosition(x, y);
-            Console.Write(root.Info);
-            if (ok == true)
-            {
-                PrintTree(root.Right, x + ((roots.Length + 2) * 7), y + 1, ref positions, roots, ref ok);
-                ok = false;
-            }
-            else
-                PrintTree(root.Right, x + 7, y + 1, ref positions, roots, ref ok);
-            PrintTree(root.Left, x - 7, y + 1, ref positions, roots, ref ok);
         }
-        static void CheckForLenght(TreeNode root, int x, ref int y)
+
+        private static void WriteBranchForLeft(int[,] positions, int c, int c1)
+        {
+            string s = "─";
+            for (int i = 0; i < positions[0, c] - positions[0, c1] - 1; i++)
+            {
+                s += "─";
+            }
+            Console.Write(s);
+        }
+        private static void WriteBranchForRight(int[,] positions, int c, int c1)
+        {
+            string s = "─";
+            for (int i = 0; i < positions[0, c1] - positions[0, c] - 2; i++)
+            {
+                s += "─";
+            }
+            Console.Write(s);
+        }
+        private static int SearchPositionRoot(TreeNode root, int[,] positions, int c1)
+        {
+            while (positions[2, c1] != root.Info) c1++;
+            return c1;
+        }
+        static void CheckForLenght(TreeNode root, int x, int y1, ref int y, int ymax)
         {
             if (root == null)
                 return;
             if (y > x) y = x;
-            CheckForLenght(root.Left, x - 7, ref y);
-            CheckForLenght(root.Right, x + 7, ref y);
+            CheckForLenght(root.Left, x - 7 * ymax / y1, y1 + 1, ref y, ymax);
+            CheckForLenght(root.Right, x + 7 * ymax / y1, y1 + 1, ref y, ymax);
         }
         static void CheckForHeight(TreeNode root, int x, ref int y1)
         {
