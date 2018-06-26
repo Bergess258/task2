@@ -18,10 +18,8 @@ namespace Task4
                 Matr[i1] = new int[n];
             for (int i1 = 0; i1 < Numbers.Length; i1++)
                 Numbers[i1] = Library.RandIntFT(0, 100);
-            int i = 0, j = 0, c = 1, h = 0;
+            int i = 0, j = 0, c = 1;
             Matr[0][0] = Numbers[0];
-            for (int i1 = 1; i1 <= n; i1++)
-                h += i1;
             while (true)
             {
                 Matr[i][++j] = Numbers[c++];

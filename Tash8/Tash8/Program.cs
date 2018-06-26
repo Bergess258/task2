@@ -25,7 +25,7 @@ namespace Tash8
                     if (mas[i][j] == 1) { ok = false; break; }
                 if (ok == true) Console.WriteLine("Вершина под № {0} свободна",i+1);
             }
-                    Library.WriteMass(mas);
+            Library.WriteMass(mas);
             Console.ReadLine();
         }
     }
