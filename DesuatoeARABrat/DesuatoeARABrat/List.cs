@@ -57,6 +57,7 @@ namespace DesuatoeARABrat
         public List(int num)
         {
             Main.data = num;
+            if(num!=0)
             Add(num - 1);
             Point P = Main;
             while (P.next != null)

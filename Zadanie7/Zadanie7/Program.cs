@@ -18,11 +18,12 @@ namespace Zadanie7
             {
                 ok = true;
                 first = Console.ReadLine();
-                foreach(char y in first)
+                if(first.Length == 0) { Console.WriteLine("Неверный формат кода"); ok = false; }
+                foreach (char y in first)
                 {
                     string y1 = Convert.ToString(y);
                     byte t = Convert.ToByte(y1);
-                    if (t != 0 && t != 1) { Console.WriteLine("Неверный формат кода"); ok = false; break; }
+                    if ((t != 0 && t != 1)) { Console.WriteLine("Неверный формат кода"); ok = false; break; }
                     list.Add(t);
                 }
             } while (ok == false);

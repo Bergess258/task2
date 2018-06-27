@@ -13,9 +13,9 @@ namespace DesuatoeARABrat
         {
             int n = Library.ReadIntMoreThan(0);
             int m = Library.ReadIntMoreThan(0);
-            List list = new List(n);
+            List list = new List(n-1);
             list.StartSchet(m);
-            Console.WriteLine(list.Data());
+            Console.WriteLine(list.Data()+1);
         }
     }
 }
